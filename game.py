@@ -15,15 +15,13 @@ for i in raw.splitlines():
 
 raw2 = """"""
 for i in raw.splitlines():
-    if len(i) != max(sizes):
-        while True:
-            if len(i) == max(sizes):
-                break
-            else:
-                i += ' '
-    raw2 += i + '\n'
-
+    while len(i) != max(sizes):
+        i += ' '
+    else:
+        raw2 += i + '\n'
+    
 raw=raw2
+print(raw)
 print(sizes, max(sizes))
 builder = """"""""
 
