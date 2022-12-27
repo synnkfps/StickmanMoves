@@ -1,9 +1,11 @@
+from colorama import Fore as cl
 raw = r"""
-          O    
-+-------+   +---+
-|  m            |
-|               |
-+---------------+
++-----------+
+| O         |
++------+    +
+|           |
+|    m      |
++-----------+
 """
 
 map = [] 
@@ -13,16 +15,20 @@ for i in raw.splitlines():
     sizes.append(len(i))
     map.append(list(i))
 
-raw2 = """"""
+raw2 = r""""""
 for i in raw.splitlines():
     while len(i) != max(sizes):
         i += ' '
     else:
         raw2 += i + '\n'
-    
+else:
+    print(f'Finished adjusting the map size! (found ideal size: {max(sizes)})')
+
+map.clear()
+for i in raw2.splitlines():
+    map.append(list(i))
+
 raw=raw2
-print(raw)
-print(sizes, max(sizes))
 builder = """"""""
 
 print(builder)
@@ -35,11 +41,11 @@ def renderMap():
     for fileira in map:
         linha = ''
         for coluna in fileira:
-            linha += coluna
+            linha += coluna.replace('O', f'{cl.GREEN}O{cl.RESET}')
         else:
             builder += linha + '\n'
-    else:
-        print('Finished rendering the map')
+    #else:
+    #    print('Finished rendering the map')
 
 renderMap() # renderiza pela primeira vez
 
@@ -64,32 +70,34 @@ def movePlayer(x, y):
     playerX = getPlayerPos()[0]
     playerY = getPlayerPos()[1]
 
-    print(playerX, playerY)
-    nextPos = map[playerY+y][playerX+x]
-    if nextPos == ' ':
-        map[playerY][playerX], map[playerY+y][playerX+x] = map[playerY+y][playerX+x], map[playerY][playerX]
-    else:
-        if nextPos == 'm':
-            print('Found a chest!')
-            map[playerY][playerX], map[playerY+y][playerX+x] = ' ', map[playerY][playerX]
-        
-        print('I can\'t walk.')
+    try:
+        nextPos = map[playerY+y][playerX+x]
+
+        def moveToNextPredict(): map[playerY][playerX], map[playerY+y][playerX+x] = map[playerY+y][playerX+x], map[playerY][playerX]
+
+        if nextPos == ' ':
+            moveToNextPredict()
+        else:
+            if nextPos == 'm':
+                print('Found a chest!')
+                map[playerY][playerX], map[playerY+y][playerX+x] = ' ', map[playerY][playerX]
+
+            print('I can\'t walk.')
+    except:
+        pass 
 
     renderMap()
-    print(builder)
 
 while True:
     newPos = input('W/A/S/D\n> ').lower()
 
     for i in newPos:
-        if i == 'd':
-            movePlayer(1, 0)
-        if i == 'a':
-            movePlayer(-1, 0)
-        if i == 'w':
-            movePlayer(0, -1)
-        if i == 's':
-            movePlayer(0, 1)
+        if i == 'd': movePlayer(1, 0)
+        if i == 'a': movePlayer(-1, 0)
+        if i == 'w': movePlayer(0, -1)
+        if i == 's': movePlayer(0, 1)
+    else:
+        print(builder)
 
 #  ☺
 # -┼-
